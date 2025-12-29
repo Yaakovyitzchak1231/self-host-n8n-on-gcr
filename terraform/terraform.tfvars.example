@@ -1,22 +1,81 @@
-# Example terraform.tfvars file
-# Rename this to terraform.tfvars and fill in the sensitive values.
+# ========================================
+# n8n on Google Cloud Run - Configuration
+# ========================================
+#
+# This file contains the configuration for deploying n8n on Google Cloud Run.
+# Copy this file to terraform.tfvars and customize the values below.
+#
+# REQUIRED: You must set at least the project ID
+# OPTIONAL: Other values have sensible defaults
 
-# --- Optional (Defaults are likely suitable based on your setup) --- #
-# gcp_project_id = "your-project-id"
-# gcp_region     = "us-west2"
+# --- REQUIRED --- #
 
-# db_name        = "n8n"
-# db_user        = "n8n-user"
-# db_tier        = "db-f1-micro"
-# db_storage_size = 10
+# Your Google Cloud Project ID
+# Find it at: https://console.cloud.google.com/
+gcp_project_id = "your-project-id"
 
+# --- OPTIONAL (Recommended Defaults) --- #
+
+# Google Cloud Region
+# Choose a region close to you: https://cloud.google.com/about/locations
+# gcp_region = "us-west2"
+
+# --- Image Configuration --- #
+
+# Use official n8n image (Option A - Recommended) or custom image (Option B)
+# Set to false for official image, true for custom Docker image
 # use_custom_image = false
+
+# Artifact Registry repository name (only used if use_custom_image = true)
 # artifact_repo_name = "n8n-repo"
 
+# --- Database Configuration --- #
+
+# Database name for n8n
+# db_name = "n8n"
+
+# Database username
+# db_user = "n8n-user"
+
+# Cloud SQL instance tier (db-f1-micro is the cheapest, perfect for light use)
+# Options: db-f1-micro, db-g1-small, db-n1-standard-1
+# db_tier = "db-f1-micro"
+
+# Database storage size in GB
+# db_storage_size = 10
+
+# --- Cloud Run Configuration --- #
+
+# Cloud Run service name
 # cloud_run_service_name = "n8n"
-# service_account_name = "n8n-service-account"
-# cloud_run_cpu = "2"
+
+# CPU allocation (1 CPU is usually sufficient)
+# Options: "1", "2", "4"
+# cloud_run_cpu = "1"
+
+# Memory allocation (2Gi is recommended minimum)
+# Options: "512Mi", "1Gi", "2Gi", "4Gi", "8Gi"
 # cloud_run_memory = "2Gi"
+
+# Maximum number of instances (keep at 1 to avoid database conflicts)
 # cloud_run_max_instances = 1
+
+# Container port (5678 is n8n's default port)
 # cloud_run_container_port = 5678
-# generic_timezone = "UTC" 
+
+# --- Other Configuration --- #
+
+# Service account name for Cloud Run
+# service_account_name = "n8n-service-account"
+
+# Timezone for n8n (affects scheduling and timestamps)
+# Full list: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+# generic_timezone = "UTC"
+
+# ========================================
+# Cost Optimization Tips:
+# - Keep min_instances = 0 (scales to zero when idle)
+# - Use db-f1-micro tier for light usage
+# - Choose a region close to you to reduce latency costs
+# ========================================
+

@@ -4,9 +4,12 @@ So you want to run n8n without the monthly subscription fees, keep your data und
 
 This guide walks you through deploying n8n (that powerful workflow automation platform) on Google Cloud Run with PostgreSQL persistence. You'll end up with a fully functional system that scales automatically, connects to Google services via OAuth, and won't drain your wallet when idle.
 
-> **🚀 Quick Start Option**: Want to skip the manual setup? Jump to the [Terraform Deployment Option](#terraform-deployment-option) section for a streamlined, automated deployment. The step-by-step guide below is valuable for understanding what's happening under the hood, but Terraform will handle all the heavy lifting for you!
+> **🚀 New! Simple Deployment**: Want the easiest path to deployment? Check out [QUICKSTART.md](QUICKSTART.md) for a streamlined guide with automated validation and deployment scripts. Perfect for getting started quickly!
+
+> **📚 Detailed Guide**: The manual step-by-step guide below is valuable for understanding what's happening under the hood and customizing your deployment.
 
 ## Table of Contents ##
+- [🚀 Quick Start (Recommended)](QUICKSTART.md) - Fastest way to get running
 - [Quick Start with Terraform](#terraform-deployment-option)
 - [Manual Step-by-Step Guide](#step-1-set-up-your-google-cloud-project)
 - [Configuration](#step-8-configure-n8n-for-oauth-with-google-services)
@@ -711,6 +714,60 @@ terraform apply
 Huge thanks to [@alliecatowo](https://github.com/alliecatowo) for this valuable addition!
 
 For more details and usage instructions, please see the `terraform/` directory in this repository.
+
+---
+
+## Helpful Scripts & Tools
+
+This repository includes several utility scripts to make deployment and management easier:
+
+### Quick Deploy Script
+
+The `quick-deploy.sh` script provides a simple interface for common operations:
+
+```bash
+# Validate your environment before deployment
+./quick-deploy.sh setup
+
+# Deploy with official image (recommended)
+./quick-deploy.sh deploy
+
+# Deploy with custom Docker image
+./quick-deploy.sh custom
+
+# Check deployment health
+./quick-deploy.sh check
+
+# Update existing deployment
+./quick-deploy.sh update
+
+# Remove all resources
+./quick-deploy.sh cleanup
+```
+
+### Individual Scripts
+
+Located in the `scripts/` directory:
+
+**validate-setup.sh** - Validates prerequisites and configuration:
+```bash
+./scripts/validate-setup.sh
+```
+Checks for gcloud CLI, Terraform, Docker, authentication, and configuration.
+
+**health-check.sh** - Verifies deployment health:
+```bash
+./scripts/health-check.sh
+```
+Checks Cloud Run service, database, secrets, and accessibility.
+
+**cleanup.sh** - Safely removes all resources:
+```bash
+./scripts/cleanup.sh
+```
+Provides confirmation prompts and backup reminders before deletion.
+
+These scripts help ensure a smooth deployment experience and make it easier to manage your n8n instance.
 
 ---
 
