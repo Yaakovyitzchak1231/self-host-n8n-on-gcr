@@ -164,10 +164,10 @@ resource "google_project_iam_member" "sql_client" {
 locals {
   # Use official image or custom image based on variable
   n8n_image = var.use_custom_image ? "${var.gcp_region}-docker.pkg.dev/${var.gcp_project_id}/${var.artifact_repo_name}/${var.cloud_run_service_name}:latest" : "docker.io/n8nio/n8n:latest"
-  
+
   # Port configuration differs between options
   n8n_port = var.use_custom_image ? "443" : "5678"
-  
+
   # User folder differs between options
   n8n_user_folder = var.use_custom_image ? "/home/node" : "/home/node/.n8n"
 }
@@ -194,11 +194,11 @@ resource "google_cloud_run_v2_service" "n8n" {
     }
     containers {
       image = local.n8n_image
-      
+
       # Set command and args for official image (Option A)
       command = var.use_custom_image ? null : ["/bin/sh"]
       args    = var.use_custom_image ? null : ["-c", "sleep 5; n8n start"]
-      
+
       volume_mounts {
         name       = "cloudsql"
         mount_path = "/cloudsql"
@@ -212,9 +212,9 @@ resource "google_cloud_run_v2_service" "n8n" {
           memory = var.cloud_run_memory
         }
         startup_cpu_boost = true
-        cpu_idle          = false  # This is --no-cpu-throttling
+        cpu_idle          = false # This is --no-cpu-throttling
       }
-      
+
       # Only set N8N_PATH for custom image
       dynamic "env" {
         for_each = var.use_custom_image ? [1] : []
@@ -223,7 +223,7 @@ resource "google_cloud_run_v2_service" "n8n" {
           value = "/"
         }
       }
-      
+
       env {
         name  = "N8N_PORT"
         value = local.n8n_port

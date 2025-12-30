@@ -5,7 +5,7 @@
 
 # Terraform runtime files
 .terraform/
-.terraform.lock.hcl
+# Note: .terraform.lock.hcl is NOT ignored - it should be committed for reproducible builds
 
 # Terraform sensitive variables
 terraform.tfvars
